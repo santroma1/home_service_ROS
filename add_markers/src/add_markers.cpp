@@ -50,17 +50,19 @@ int main( int argc, char** argv )
 
     marker.lifetime = ros::Duration();
 
-    // Publish the marker
-    while (marker_pub.getNumSubscribers() < 1)
-    {
-      if (!ros::ok())
-      {
-        return 0;
-      }
-      ROS_WARN_ONCE("Please create a subscriber to the marker");
-      sleep(1);
-    }
+    //Publish the marker
+    // while (marker_pub.getNumSubscribers() < 1)
+    // {
+    //   if (!ros::ok())
+    //   {
+    //     return 0;
+    //   }
+    //   ROS_WARN_ONCE("Please create a subscriber to the marker");
+    //   sleep(1);
+    // }
 
+    sleep(1);
+    ROS_INFO("MARKER PUBLISHED");
     marker_pub.publish(marker);
 
     sleep(5);
@@ -73,6 +75,7 @@ int main( int argc, char** argv )
     marker.pose.position.x = -5.0;
     marker.pose.position.y = -7.0;
     marker.action = visualization_msgs::Marker::ADD;
+    ROS_INFO("MARKER 2 PUBLISHED");
     marker_pub.publish(marker);
 
 

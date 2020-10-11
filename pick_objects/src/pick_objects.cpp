@@ -2,8 +2,11 @@
 #include <ros/ros.h>
 #include <move_base_msgs/MoveBaseAction.h>
 #include <actionlib/client/simple_action_client.h>
+#include <visualization_msgs/Marker.h>
 #include "std_msgs/String.h"
 
+
+void marker_callback(visualization_msgs::Marker marker);
 // Define a client for to send goal requests to the move_base server through a SimpleActionClient
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
 
@@ -16,7 +19,9 @@ int main(int argc, char** argv){
   //NodeHandler
   ros::NodeHandle n;
 
-  ros::Publisher position_pub= n.advertise<std_msgs::String>("position", 1000);
+  ros::Publisher position_pub = n.advertise<std_msgs::String>("position", 1000);
+
+  ros::Subscriber markers_sub = n.subscribe("/visualization_marker", 1000, marker_callback);
 
   //tell the action client that we want to spin a thread by default
   MoveBaseClient ac("move_base", true);
@@ -69,7 +74,7 @@ int main(int argc, char** argv){
     if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED){
         std_msgs::String dropoff_msg;
         dropoff_msg.data = "dropoff";
-        position_pub.publish(dropoff_msg);
+        //position_pub.publish(dropoff_msg);
         ROS_INFO("Arrived to dropoff zone");
     }else{
         ROS_INFO("An error ocurred, your robot was not able to move");
@@ -95,4 +100,10 @@ move_base_msgs::MoveBaseGoal goToGoal(float x, float y, float w){
     goal.target_pose.pose.orientation.w = w;
 
     return goal;
+}
+
+
+void marker_callback(visualization_msgs::Marker marker)
+{
+    ROS_INFO("RECIEVED MARKER");
 }
