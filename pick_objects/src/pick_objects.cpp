@@ -10,8 +10,6 @@ void marker_callback(visualization_msgs::Marker marker);
 // Define a client for to send goal requests to the move_base server through a SimpleActionClient
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
 
-move_base_msgs::MoveBaseGoal goToGoal(float x, float y, float w);
-
 int main(int argc, char** argv){
   // Initialize the simple_navigation_goals node
   ros::init(argc, argv, "pick_objects");
@@ -34,11 +32,11 @@ int main(int argc, char** argv){
   move_base_msgs::MoveBaseGoal goal;
 
   // set up the frame parameters
-  goal.target_pose.header.frame_id = "base_link";
+  goal.target_pose.header.frame_id = "map";
   goal.target_pose.header.stamp = ros::Time::now();
 
-  goal.target_pose.pose.position.x = 0.0;
-  goal.target_pose.pose.position.y = -10.0;
+  goal.target_pose.pose.position.x = -10.0;
+  goal.target_pose.pose.position.y = 0.0;
   goal.target_pose.pose.orientation.w = 1.0;
 
    // Send the goal position and orientation for the robot to reach
@@ -59,11 +57,11 @@ int main(int argc, char** argv){
     move_base_msgs::MoveBaseGoal goal2;
 
     // set up the frame parameters
-    goal2.target_pose.header.frame_id = "base_link";
+    goal2.target_pose.header.frame_id = "map";
     goal2.target_pose.header.stamp = ros::Time::now();
 
-    goal2.target_pose.pose.position.x = 7.0;
-    goal2.target_pose.pose.position.y = 5.0;
+    goal2.target_pose.pose.position.x = -5.0;
+    goal2.target_pose.pose.position.y = -7.0;
     goal2.target_pose.pose.orientation.w = 1.0;
     // Send the goal position and orientation for the robot to reach
     ROS_INFO("Sending dropoffzone");
@@ -86,21 +84,6 @@ int main(int argc, char** argv){
   return 0;
 }
 
-
-move_base_msgs::MoveBaseGoal goToGoal(float x, float y, float w){
-
-    move_base_msgs::MoveBaseGoal goal;
-
-    // set up the frame parameters
-    goal.target_pose.header.frame_id = "base_link";
-    goal.target_pose.header.stamp = ros::Time::now();
-
-    goal.target_pose.pose.position.x = x;
-    goal.target_pose.pose.position.y = y;
-    goal.target_pose.pose.orientation.w = w;
-
-    return goal;
-}
 
 
 void marker_callback(visualization_msgs::Marker marker)
